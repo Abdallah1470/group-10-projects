@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Events Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #f1f5f9;
+            --success-color: #22c55e;
+            --warning-color: #eab308;
+            --error-color: #ef4444;
+            --text-color: #1f2937;
+            --bg-color: #f8fafc;
+            --sidebar-width: 280px;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            position: fixed;
+            height: 100vh;
+            padding: 2rem;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            box-shadow: var(--card-shadow);
+        }
+
+        .sidebar-header {
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #e5e7eb;
+            transition: var(--transition);
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.75rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        /* Interactive Elements */
+        .demo-box {
+            padding: 2rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .demo-box:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .interactive-area {
+            background: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            transition: var(--transition);
+        }
+
+        .interactive-area:hover {
+            background: #eef2ff;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.875rem;
+            margin: 0.75rem 0;
+            border: 2px solid var(--secondary-color);
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Drag and Drop */
+        .draggable {
+            padding: 1.5rem;
+            background: var(--secondary-color);
+            border-radius: 0.75rem;
+            cursor: move;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .draggable:hover {
+            background: #eef2ff;
+            transform: translateY(-2px);
+        }
+
+        .dropzone {
+            min-height: 180px;
+            border: 3px dashed var(--secondary-color);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            transition: var(--transition);
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .dropzone:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            height: 4px;
+            background: var(--primary-color);
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(-8px);
+        }
+
+        /* Output Text Styling */
+        #clickOutput, #keyboardOutput, #coordinates, #windowSize, #scrollInfo, #visibilityInfo {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+
+            .progress-bar {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Rest of the HTML remains exactly the same -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Events Explorer</h1>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="#mouse" class="nav-link">Mouse Events</a>
+            </li>
+            <li class="nav-item">
+                <a href="#keyboard" class="nav-link">Keyboard Events</a>
+            </li>
+            <li class="nav-item">
+                <a href="#form" class="nav-link">Form Events</a>
+            </li>
+            <li class="nav-item">
+                <a href="#window" class="nav-link">Window Events</a>
+            </li>
+            <li class="nav-item">
+                <a href="#drag" class="nav-link">Drag & Drop</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="mouse" aria-labelledby="mouse-heading">
+            <h2 id="mouse-heading">Mouse Events</h2>
+            
+            <div class="demo-box" id="clickBox">
+                <p>Click, double-click, or right-click me!</p>
+                <p id="clickOutput">No events yet</p>
+            </div>
+
+            <div class="tooltip">
+                <div class="demo-box" id="hoverBox">
+                    Hover over me!
+                    <span class="tooltip-text">This is a tooltip!</span>
+                </div>
+            </div>
+
+            <div class="interactive-area" id="mouseMoveArea">
+                <p>Move your mouse here</p>
+                <p id="coordinates">Coordinates: X: 0, Y: 0</p>
+            </div>
+        </section>
+
+        <section id="keyboard" aria-labelledby="keyboard-heading">
+            <h2 id="keyboard-heading">Keyboard Events</h2>
+            <div class="interactive-area">
+                <input type="text" id="keyboardInput" 
+                       placeholder="Type here to test keyboard events..."
+                       aria-label="Keyboard event testing input">
+                <p id="keyboardOutput">Press any key</p>
+            </div>
+        </section>
+
+        <section id="form" aria-labelledby="form-heading">
+            <h2 id="form-heading">Form Events</h2>
+            <form id="demoForm">
+                <div class="interactive-area">
+                    <input type="text" id="formInput" 
+                           placeholder="Focus/blur demo input"
+                           aria-label="Focus and blur demonstration input">
+                    <textarea id="formTextarea" 
+                              placeholder="Type here to test change events..."
+                              aria-label="Change event demonstration textarea"></textarea>
+                    <select id="formSelect" aria-label="Selection demonstration">
+                        <option value="">Select an option...</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                    <button type="submit">Submit Form</button>
+                    <button type="reset">Reset Form</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="window" aria-labelledby="window-heading">
+            <h2 id="window-heading">Window Events</h2>
+            <div class="interactive-area">
+                <p id="windowSize">Window size: Calculating...</p>
+                <p id="scrollInfo">Scroll position: 0%</p>
+                <p id="visibilityInfo">Page visibility: Visible</p>
+            </div>
+        </section>
+
+        <section id="drag" aria-labelledby="drag-heading">
+            <h2 id="drag-heading">Drag & Drop Events</h2>
+            <div class="draggable" draggable="true" id="draggableItem">
+                Drag me!
+            </div>
+            <div class="dropzone" id="dropZone">
+                Drop zone
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <script>
+        // JavaScript remains exactly the same
+        // Utility Functions
+        function updateProgressBar() {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + section.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        // Mouse Events
+        const clickBox = document.getElementById('clickBox');
+        const clickOutput = document.getElementById('clickOutput');
+
+        clickBox.addEventListener('click', () => {
+            clickOutput.textContent = 'Clicked!';
+        });
+
+        clickBox.addEventListener('dblclick', () => {
+            clickOutput.textContent = 'Double clicked!';
+        });
+
+        clickBox.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            clickOutput.textContent = 'Right clicked!';
+        });
+
+        const mouseMoveArea = document.getElementById('mouseMoveArea');
+        const coordinates = document.getElementById('coordinates');
+
+        mouseMoveArea.addEventListener('mousemove', (e) => {
+            const rect = mouseMoveArea.getBoundingClientRect();
+            const x = Math.round(e.clientX - rect.left);
+            const y = Math.round(e.clientY - rect.top);
+            coordinates.textContent = `Coordinates: X: ${x}, Y: ${y}`;
+        });
+
+        // Keyboard Events
+        const keyboardInput = document.getElementById('keyboardInput');
+        const keyboardOutput = document.getElementById('keyboardOutput');
+
+        keyboardInput.addEventListener('keydown', (e) => {
+            keyboardOutput.textContent = `Key down: ${e.key}`;
+        });
+
+        keyboardInput.addEventListener('keyup', (e) => {
+            keyboardOutput.textContent = `Key up: ${e.key}`;
+        });
+
+        keyboardInput.addEventListener('keypress', (e) => {
+            keyboardOutput.textContent += ` (Character: ${e.key})`;
+        });
+
+        // Form Events
+        const demoForm = document.getElementById('demoForm');
+        const formInput = document.getElementById('formInput');
+        const formTextarea = document.getElementById('formTextarea');
+        const formSelect = document.getElementById('formSelect');
+
+        formInput.addEventListener('focus', () => {
+            formInput.style.borderColor = 'var(--primary-color)';
+        });
+
+        formInput.addEventListener('blur', () => {
+            formInput.style.borderColor = '#e5e7eb';
+        });
+
+        formTextarea.addEventListener('input', (e) => {
+            const length = e.target.value.length;
+            e.target.style.borderColor = length > 0 ? 'var(--success-color)' : '#e5e7eb';
+        });
+
+        formSelect.addEventListener('change', () => {
+            formSelect.style.borderColor = 'var(--success-color)';
+        });
+
+        demoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Form submitted!');
+        });
+
+        demoForm.addEventListener('reset', () => {
+            [formInput, formTextarea, formSelect].forEach(el => {
+                el.style.borderColor = '#e5e7eb';
+            });
+        });
+
+        // Window Events
+        function updateWindowSize() {
+            const windowSize = document.getElementById('windowSize');
+            windowSize.textContent = `Window size: ${window.innerWidth}px × ${window.innerHeight}px`;
+        }
+
+        window.addEventListener('resize', updateWindowSize);
+        window.addEventListener('load', updateWindowSize);
+
+        // Scroll Events
+        window.addEventListener('scroll', () => {
+            updateProgressBar();
+            updateActiveNavLink();
+            
+            const backToTop = document.getElementById('backToTop');
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+
+            const scrollInfo = document.getElementById('scrollInfo');
+            const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            scrollInfo.textContent = `Scroll position: ${scrollPercent}%`;
+        });
+
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Drag and Drop
+        const draggableItem = document.getElementById('draggableItem');
+        const dropZone = document.getElementById('dropZone');
+
+        draggableItem.addEventListener('dragstart', () => {
+            draggableItem.style.opacity = '0.5';
+            dropZone.style.borderColor = 'var(--primary-color)';
+        });
+
+        draggableItem.addEventListener('dragend', () => {
+            draggableItem.style.opacity = '1';
+            dropZone.style.borderColor = '#e5e7eb';
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.background = '#f0f9ff';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.background = 'transparent';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.background = 'transparent';
+            dropZone.textContent = 'Item dropped!';
+            setTimeout(() => {
+                dropZone.textContent = 'Drop zone';
+            }, 1500);
+        });
+
+        // Page Visibility
+        document.addEventListener('visibilitychange', () => {
+            const visibilityInfo = document.getElementById('visibilityInfo');
+            visibilityInfo.textContent = `Page visibility: ${document.hidden ? 'Hidden' : 'Visible'}`;
+        });
+
+        // Initialize
+        updateWindowSize();
+        updateProgressBar();
+        updateActiveNavLink();
+    </script>
+</body>
+</html>
