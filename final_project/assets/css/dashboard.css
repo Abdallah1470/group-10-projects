@@ -1,0 +1,39 @@
+.dashboard-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-container h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.dashboard-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.dashboard-container table th, .dashboard-container table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.dashboard-container table th {
+    background-color: #34495e;
+    color: white;
+}
+
+.dashboard-container table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.dashboard-container a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.dashboard-container a:hover {
+    text-decoration: underline;
+}

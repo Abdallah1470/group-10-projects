@@ -1,0 +1,98 @@
+.dashboard-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.doctor-info img {
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.doctor-info p {
+    margin: 5px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+form select, form button {
+    padding: 5px;
+    margin-top: 5px;
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    text-align: center;
+    padding: 50px;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.feature {
+    background-color: #f4f6f8;
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.feature h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.feature a {
+    text-decoration: none;
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.feature a:hover {
+    text-decoration: underline;
+}
+
+/* Header and Footer Styling (if not already included) */
+header, footer {
+    background-color: #34495e;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
