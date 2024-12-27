@@ -66,8 +66,8 @@ INSERT INTO users (name, email, password, role, photo) VALUES
 ('Patient One', 'patient1@example.com', SHA2('patient_password', 256), 'patient', 'images/patient1.jpg');
 
 INSERT INTO doctors (name, specialty, description, contact_info, location, photo) VALUES
-('Dr. Abdallah', 'Cardiology', 'Experienced cardiologist specializing in heart health.', '+201024096379', 'Cairo', 'images/doctor_1.jpg'),
-('Dr. Abdelrahman', 'Pediatrics', 'Expert in child health and development.', '+201123456789', 'Cairo', 'images/doctor_2.jpg');
+('Dr. John Smith', 'Cardiology', 'Experienced cardiologist specializing in heart health.', '123-456-7890', '123 Heart Lane, Cardio City', 'images/john_smith.jpg'),
+('Dr. Jane Doe', 'Pediatrics', 'Expert in child health and development.', '098-765-4321', '456 Pediatric Road, Kidsville', 'images/jane_doe.jpg');
 
 INSERT INTO services (name, description) VALUES
 ('General Checkup', 'A comprehensive health checkup.'),
